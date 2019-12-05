@@ -1,0 +1,5 @@
+classes = 3 
+train  = ./butterfly-train.txt  
+valid  = ./butterfly-test.txt  
+names = ./configFile/butterfly-obj.names  
+backup = backup
