@@ -33,11 +33,11 @@ export default {
   name: "ImageInfo",
   computed: {
     ...mapState({
-      result: state => state.image.result,
+      result: state => state.video.result,
       butterfly: state => {
         // console.log("xxx 320 state: ", state);
-        if (state.image.result && state.image.result.name) {
-          const name = state.image.result.name;
+        if (state.video.result && state.video.result.name) {
+          const name = state.video.result.name;
           // console.log("xxx 325 keys: ", Object.keys(state.butterfly.data));
           const butterfly = Object.keys(state.butterfly.data).find(
             b => b.toLowerCase() === name.toLowerCase()

@@ -6,25 +6,25 @@
           class="imageView"
           :class="{'selected' : isOriginImg==true}"
           @click="selectOriginImg(true)"
-        >Origin Image</h3>
+        >Origin Video</h3>
         <div v-if="detectedUrl">/</div>
         <h3
           class="imageView"
           :class="{'selected' : isOriginImg==false}"
           v-if="detectedUrl"
           @click="selectOriginImg(false)"
-        >Detected Image</h3>
+        >Detected Video</h3>
       </div>
       <!-- <img class="image__display" :src="getDisplayImg()" /> -->
       <div class="image__display">
         <video width="100%" controls>
-          <source :src="getDisplayImg()" id="videoId" />Your browser does not support HTML5 video.
+          <source :src="getDisplaySource()" id="videoId" />Your browser does not support HTML5 video.
         </video>
       </div>
     </div>
-    <div class="imageShow__history history">
+    <!-- <div class="imageShow__history history">
       <div class="history__title">History</div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -35,9 +35,9 @@ export default {
   name: "ImageShow",
   computed: {
     ...mapState({
-      detectedImage: state => state.image.detectedImage,
-      url: state => state.image.url,
-      detectedUrl: state => state.image.detectedUrl
+      detectedImage: state => state.video.detectedImage,
+      url: state => state.video.url,
+      detectedUrl: state => state.video.detectedUrl
     }),
     defaultImg() {
       return "https://nature.mdc.mo.gov/sites/default/files/styles/centered_full/public/webform/2018/Common%20Buckeye-20181011-2222.jpeg";
@@ -51,19 +51,21 @@ export default {
   watch: {
     detectedUrl: function() {
       this.isOriginImg = false;
-      this.$store.commit("image/getResult");
+      this.$store.commit("video/getResult");
     }
   },
   methods: {
     getImgUrl(pic) {
       return require("~/assets/images/" + pic);
     },
-    getDisplayImg() {
-      return this.isOriginImg && this.url
-        ? this.url
-        : !this.isOriginImg && this.detectedUrl
-        ? this.detectedUrl
-        : this.defaultImg;
+    getDisplaySource() {
+      console.log("xxx005 display: ", this.isOriginImg, this.url);
+      return this.url;
+      // return this.isOriginImg && this.url
+      //   ? this.url
+      //   : !this.isOriginImg && this.detectedUrl
+      //   ? this.detectedUrl
+      //   : this.defaultImg;
     },
     selectOriginImg(value) {
       this.isOriginImg = Boolean(value);

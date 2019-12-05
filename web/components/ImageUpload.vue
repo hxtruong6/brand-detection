@@ -56,9 +56,9 @@ export default {
   },
   computed: {
     ...mapState({
-      url: state => state.image.url,
-      detectedUrl: state => state.image.detectedUrl,
-      loading: state => state.image.loading
+      url: state => state.video.url,
+      detectedUrl: state => state.video.detectedUrl,
+      loading: state => state.video.loading
     })
   },
   data() {
@@ -67,33 +67,26 @@ export default {
       disableDetectBtn: true,
       token: "xxx",
       video: ""
-      // "https://s3.pstatp.com/aweme/resource/web/static/image/index/tvc-v2_30097df.mp4"
+      // "https://s3.pstatp.com/aweme/resource/web/static/video/index/tvc-v2_30097df.mp4"
 
       // percentage: 0,
       // status: null
     };
   },
   methods: {
-    handleUploadError(error) {
-      this.$notify.error({
-        title: "Uploading video error",
-        message: error
-      });
-      // eslint-disable-next-line no-console
-      console.log("Uploading video error", error);
-    },
-    handleResponse(response, file) {
-      console.log("xxx001 video upload: ", response, file);
-      return URL.createObjectURL(file.raw);
-    },
     getImgUrl(pic) {
       return require("~/assets/images/" + pic);
     },
     onFileChanged(event) {
-      const originImage = event.target.files[0];
+      const originVideo = event.target.files[0];
+      console.log("xxx002 video: ", originVideo);
       this.uploadIcon = "uploaded.png";
-      this.$store.commit("image/onFileChanged", originImage);
+      this.$store.commit("video/onFileChanged", originVideo);
       this.disableDetectBtn = false;
+      this.$notify.success({
+        title: "Uploading video success",
+        message: "Video is ready for detecting"
+      });
     },
     checkURL(url) {
       return url.match(/\.(jpeg|jpg|png)$/) != null;
@@ -102,7 +95,7 @@ export default {
       // Test: https://pbs.twimg.com/media/DiLYBR9VMAAfvSU.jpg
       const link = event.target.value;
       // if (this.checkURL(link)) {
-      this.$store.commit("image/onPasteLink", link);
+      this.$store.commit("video/onPasteLink", link);
       this.disableDetectBtn = false;
       // }
     },
@@ -110,7 +103,7 @@ export default {
     //   return new Promise(resolve => setTimeout(resolve, ms));
     // },
     onDetect() {
-      this.$store.commit("image/onDetect");
+      this.$store.commit("video/onDetect");
       console.log("xx 401 loading: ", this.loading);
 
       this.uploadIcon = "image-upload.png";
