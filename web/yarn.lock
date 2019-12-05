@@ -8107,10 +8107,22 @@ vue-client-only@^2.0.0:
   resolved "https://registry.yarnpkg.com/vue-client-only/-/vue-client-only-2.0.0.tgz#ddad8d675ee02c761a14229f0e440e219de1da1c"
   integrity sha512-arhk1wtWAfLsJyxGMoEYhoBowM87/i6HLSG2LH/03Yog6i2d9JEN1peMP0Ceis+/n9DxdenGYZZTxbPPJyHciA==
 
+vue-ele-upload-video@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/vue-ele-upload-video/-/vue-ele-upload-video-2.0.5.tgz#d45043f14afa38785e34a884bfe3c6cb5190aac2"
+  integrity sha512-DCcuEXNa3lxX7W0SUxI7sQQJFiBZhQ3pyxbANipfIpzcdik0FCkiTX38nHwolfyEbe5uI43QeC7Sf6PJY2m5Ww==
+  dependencies:
+    vue-hover-mask "^1.0.0"
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
+
+vue-hover-mask@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue-hover-mask/-/vue-hover-mask-1.0.0.tgz#c7af27b6486b07c1be2b90919c76deed1756d6ea"
+  integrity sha512-fEhw8GRQkAUCpfclss5Kta+RS628r8cOrd0pc5zInYgFmImVMvLF6LCCnKdmHQy6lqknAgBhLI1Ka+OdEDQQkQ==
 
 vue-loader@^15.7.1:
   version "15.7.2"

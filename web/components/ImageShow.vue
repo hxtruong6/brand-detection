@@ -15,7 +15,12 @@
           @click="selectOriginImg(false)"
         >Detected Image</h3>
       </div>
-      <img class="image__display" :src="getDisplayImg()">
+      <!-- <img class="image__display" :src="getDisplayImg()" /> -->
+      <div class="image__display">
+        <video width="100%" controls>
+          <source :src="getDisplayImg()" id="videoId" />Your browser does not support HTML5 video.
+        </video>
+      </div>
     </div>
     <div class="imageShow__history history">
       <div class="history__title">History</div>
@@ -113,7 +118,7 @@ export default {
       align-self: center;
       // padding: 10px;
       max-height: 85%;
-      width: auto;
+      width: 90%;
     }
   }
 

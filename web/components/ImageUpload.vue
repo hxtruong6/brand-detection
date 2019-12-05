@@ -1,23 +1,25 @@
 <template>
   <div class="imageUpload">
     <div class="imageUpload__dropArea dropArea">
-      <h2 class="dropArea__title">Upload your image</h2>
-      <p class="dropArea__info">You can upload/drop a photo or paste a URL of an image</p>
+      <h2 class="dropArea__title">Upload your video</h2>
+      <p class="dropArea__info">You can upload/drop a photo or paste a URL of a video</p>
     </div>
-    <input
-      class="dropArea__input"
-      type="file"
-      @change="onFileChanged"
-      accept="image/*"
-      name="file"
-      id="file"
-    >
-    <label class="dropArea__label dropArea__label--border" for="file">
-      <img :src="getImgUrl(uploadIcon)" title="Upload/drop image">
-      <br>
-      <h2>Choose a file</h2>
-    </label>
-    <div class="imageUpload___pasteLink pastelink">
+    <div class="dropArea__video videoUpload">
+      <input
+        class="dropArea__input"
+        type="file"
+        @change="onFileChanged"
+        accept="video/*"
+        name="VideoUploadArea"
+        id="file"
+      />
+      <label class="dropArea__label dropArea__label--border" for="file">
+        <img :src="getImgUrl(uploadIcon)" title="Upload/drop video" />
+        <br />
+        <h2>Choose a video</h2>
+      </label>
+    </div>
+    <!-- <div class="imageUpload___pasteLink pastelink">
       <h2 class="pastelink__title">Paste URL</h2>
       <input
         class="pastelink__input"
@@ -25,8 +27,8 @@
         placeholder="www.common-buckeye.jpg"
         title="URL image"
         @change="onPasteLink"
-      >
-    </div>
+      />
+    </div>-->
     <div
       class="imageUpload__btn detectBtn"
       v-loading="loading"
@@ -45,9 +47,13 @@
 
 <script>
 import { mapState } from "vuex";
+import EleUploadVideo from "vue-ele-upload-video";
 
 export default {
   name: "ImageUpload",
+  components: {
+    EleUploadVideo
+  },
   computed: {
     ...mapState({
       url: state => state.image.url,
@@ -57,19 +63,35 @@ export default {
   },
   data() {
     return {
-      uploadIcon: "image-upload.png",
-      disableDetectBtn: true
+      uploadIcon: "video-upload.png",
+      disableDetectBtn: true,
+      token: "xxx",
+      video: ""
+      // "https://s3.pstatp.com/aweme/resource/web/static/image/index/tvc-v2_30097df.mp4"
+
       // percentage: 0,
       // status: null
     };
   },
   methods: {
+    handleUploadError(error) {
+      this.$notify.error({
+        title: "Uploading video error",
+        message: error
+      });
+      // eslint-disable-next-line no-console
+      console.log("Uploading video error", error);
+    },
+    handleResponse(response, file) {
+      console.log("xxx001 video upload: ", response, file);
+      return URL.createObjectURL(file.raw);
+    },
     getImgUrl(pic) {
       return require("~/assets/images/" + pic);
     },
     onFileChanged(event) {
       const originImage = event.target.files[0];
-      this.uploadIcon = "image-uploaded.png";
+      this.uploadIcon = "uploaded.png";
       this.$store.commit("image/onFileChanged", originImage);
       this.disableDetectBtn = false;
     },
@@ -80,8 +102,8 @@ export default {
       // Test: https://pbs.twimg.com/media/DiLYBR9VMAAfvSU.jpg
       const link = event.target.value;
       // if (this.checkURL(link)) {
-        this.$store.commit("image/onPasteLink", link);
-        this.disableDetectBtn = false;
+      this.$store.commit("image/onPasteLink", link);
+      this.disableDetectBtn = false;
       // }
     },
     // sleep(ms) {
@@ -123,8 +145,14 @@ export default {
 
     &__title {
       font-weight: bold;
+      font-size: 2rem;
     }
     &__info {
+    }
+
+    &__video {
+      width: 80%;
+      margin: 0 auto;
     }
 
     &__input {
@@ -153,6 +181,8 @@ export default {
     }
 
     &__label {
+      font-weight: bolder;
+
       margin: 5px;
       padding: 5px;
       display: flex;
@@ -160,7 +190,6 @@ export default {
       align-items: center;
       align-content: space-around;
       justify-content: space-around;
-
       &--border {
         border-top: 2px solid $primary-color-light;
         border-bottom: 2px solid $red-color-light;
