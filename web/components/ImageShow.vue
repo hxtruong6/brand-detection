@@ -35,7 +35,6 @@ export default {
     ...mapState({
       detectedImage: state => state.video.detectedImage,
       url: state => {
-        console.log("xxx124 state video: ", state.video);
         return state.video.url;
       },
       detectedUrl: state => state.video.detectedUrl

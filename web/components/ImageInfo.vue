@@ -1,6 +1,7 @@
 <template>
   <div class="imageInfo">
-    <div class="imageInfo__display" v-if="name">
+    <div class="imageInfo__display" v-if="hasResult()">
+      <img width="128px" :src="brand.logo" />
       <div class="imageInfo__name">
         <span>Name:</span>
         {{name}}
@@ -13,13 +14,19 @@
         <span>Confidence:</span>
         {{confidence}}
       </div>
+      <div class="imageInfo__percentCover">
+        <span>Percent cover:</span>
+        {{percentCover}}
+      </div>
       <div class="imageInfo__description">
         <span>Description:</span>
-        {{butterfly.description}}
+        {{brand.description}}
       </div>
-      <a class="imageInfo__link" :href="butterfly.link" target="_blank">Detail more...</a>
     </div>
-    <div class="imageInfo__notify" v-if="!name&&!second">No information</div>
+    <div class="imageInfo__notify" v-if="!hasResult()">
+      <div>No information</div>
+      <div style="color: red">{{result.message}}</div>
+    </div>
   </div>
 </template>
 
@@ -42,6 +49,16 @@ export default {
           // console.log("xxx 305 butterfly: ", butterfly);
           return state.butterfly.data[butterfly] || {};
         }
+      },
+      brand: state => {
+        if (state.video.result && state.video.result.name) {
+          const name = state.video.result.name;
+          const nameMapping = Object.keys(state.brand.data).find(
+            b => b.toLowerCase() === name.toLowerCase()
+          );
+          return state.brand.data[nameMapping];
+        }
+        return {};
       }
     })
   },
@@ -49,16 +66,24 @@ export default {
     return {
       name: "",
       second: "",
-      confidence: ""
+      confidence: "",
+      percentCover: ""
     };
   },
   watch: {
     result: function(val) {
       console.log("xxx 310 result change: ", val);
-      const { name, second, confidence } = val;
+      const { name, second, confidence, percentCover } = val;
       this.name = name;
       this.second = second;
       this.confidence = confidence;
+      this.percentCover = percentCover;
+    }
+  },
+  methods: {
+    hasResult() {
+      console.log("xxx512 has result: ", this.result);
+      return this.result && this.result.ok;
     }
   }
 };
@@ -68,7 +93,7 @@ export default {
 .imageInfo {
   flex: 1.5 1 0;
   background-color: $third-color-light;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   display: flex;
   justify-content: center;
 
@@ -97,7 +122,12 @@ export default {
       }
     }
   }
-
+  &__percentCover {
+    font-size: 2.5rem;
+    background-color: #a1dbf8;
+    padding: 5px;
+    border-radius: 3px;
+  }
   &__notify {
     margin: auto;
   }

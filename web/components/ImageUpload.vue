@@ -66,7 +66,6 @@ export default {
     },
     onFileChanged(event) {
       const originVideo = event.target.files[0];
-      // console.log("xxx002 video: ", originVideo);
       this.uploadIcon = "uploaded.png";
       this.$store.commit("video/onFileChanged", originVideo);
       this.disableDetectBtn = false;
@@ -79,27 +78,17 @@ export default {
       return url.match(/\.(jpeg|jpg|png)$/) != null;
     },
     onPasteLink(event) {
-      // Test: https://pbs.twimg.com/media/DiLYBR9VMAAfvSU.jpg
       const link = event.target.value;
-      // if (this.checkURL(link)) {
       this.$store.commit("video/onPasteLink", link);
       this.disableDetectBtn = false;
-      // }
     },
-    // sleep(ms) {
-    //   return new Promise(resolve => setTimeout(resolve, ms));
-    // },
+
     onDetect() {
       this.$store.commit("video/onDetect");
       console.log("xx 401 loading: ", this.loading);
 
       this.uploadIcon = "image-upload.png";
-      //TODO: detect again here
-      // this.disableDetectBtn = true;
     }
-    // format(percentage) {
-    //   return percentage === 100 ? "Full" : `${percentage}%`;
-    // }
   }
 };
 </script>
@@ -194,37 +183,6 @@ export default {
     &__input {
       width: 100%;
     }
-  }
-
-  &__btn,
-  .detectBtn {
-    width: 60%;
-    align-self: center;
-    display: flex;
-    flex-flow: column nowrap;
-
-    &__detect {
-      text-transform: uppercase;
-      background: $white-color;
-      padding: 10px;
-      border: 2px solid $red-color-light;
-      display: inline-block;
-      font-weight: bold;
-
-      &:hover {
-        transform: translateY(-2px) scale(1.1);
-        box-shadow: 0px 2px 20px -5px rgba(0, 0, 0, 0.5);
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        transform: scale(0.95);
-      }
-    }
-    // &__progress {
-    //   width: 120%;
-    //   margin-left: 1%;
-    // }
   }
 }
 </style>

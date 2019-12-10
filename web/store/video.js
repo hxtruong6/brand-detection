@@ -8,12 +8,19 @@ const DETECTION_STATE = {
     FAILURE: "FAILURE"
 };
 
+const dumpBrand = {
+    name: "dasani",
+    confidence: "90%",
+    second: 45,
+    percentCover: "60%"
+};
+
 export const state = () => ({
     originVideo: null,
     detectedImage: null,
     url: null,
     detectedUrl: null,
-    result: {},
+    result: { ok: false },
     loading: false,
     detectionState: DETECTION_STATE.UN_UPLOADED
 });
@@ -76,8 +83,12 @@ export const mutations = {
                 state.detectionState = DETECTION_STATE.SUCCESS;
                 // FileSaver.saveAs(blob, `prediction.jpg`);
             })
-            .catch(() => {
-                console.log("DETECT FAILURE!!");
+            .catch(err => {
+                console.log("DETECT FAILURE!! ", err);
+                state.result = {
+                    ok: false,
+                    message: "Detecting video error"
+                };
                 state.detectionState = DETECTION_STATE.FAILURE;
             })
             .finally(() => {
@@ -85,15 +96,20 @@ export const mutations = {
             });
     },
     async getResult(state) {
+        // state.result = { ok: true, ...dumpBrand };
         await this.$axios
             .get("result")
             .then(res => {
                 console.log("GET SUCCESS: ", res);
                 console.log("xxx 300 type of data: ", typeof res.data);
-                state.result = res.data;
+                state.result = { ok: true, ...res.data };
             })
             .catch(e => {
                 console.log("GET FAILURE!!");
+                state.result = {
+                    ok: false,
+                    message: "Get result from server error"
+                };
             });
     }
 };

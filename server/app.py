@@ -44,11 +44,11 @@ def process_out_info(s):
 
 def detect(imagePath):
     darknet = b'./darknet'
-    dataFile = b'configFile/butterfly-obj.data'
-    configFile = b'configFile/butterfly-yolov3.cfg'
-    weightFile = b'butterfly-yolov3_6000.weights'
+    data_file = b'configFile/butterfly-obj.data'
+    config_file = b'configFile/butterfly-yolov3.cfg'
+    weight_file = b'butterfly-yolov3_6000.weights'
     print("Start detecting...")
-    info = subprocess.run([darknet, "detector", "test", dataFile, configFile, weightFile, imagePath],
+    info = subprocess.run([darknet, "detector", "test", data_file, config_file, weight_file, imagePath],
                           stdout=PIPE, stderr=PIPE)
     # print(str(info)
     result = process_out_info(info.stdout.decode("utf-8"))
