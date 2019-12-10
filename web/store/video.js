@@ -43,7 +43,7 @@ export const mutations = {
         formData.append("file", state.originVideo);
         state.loading = true;
         await this.$axios
-            .post("image", formData, {
+            .post("video", formData, {
                 responseType: "blob",
                 headers: {
                     "Content-Type": "multipart/form-data"

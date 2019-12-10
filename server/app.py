@@ -8,6 +8,7 @@ import re
 
 UPLOAD_FOLDER = './uploadFiles/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+ALLOWED_VIDEO_EXTENSIONS = set(['mp4'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -18,6 +19,11 @@ result = None
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def allowed_video_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_VIDEO_EXTENSIONS
 
 
 def process_out_info(s):
@@ -53,7 +59,7 @@ def detect(imagePath):
 @app.route('/image', methods=['GET', 'POST'])
 def image_detection():
     global result
-    image_path = None
+    video_path = None
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -66,12 +72,37 @@ def image_detection():
         result = "Can not detect"
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(image_path)
-            result = detect(image_path)
+            video_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(video_path)
+            result = detect(video_path)
 
     image_result = "predictions.jpg"
     return send_file(image_result, mimetype='image/*')
+
+
+@app.route('/video', methods=['GET', 'POST'])
+def video_detection():
+    global result
+    video_path = ""
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return "No video"
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return "No video"
+        result = "Can not detect"
+        if file and allowed_video_file(file.filename):
+            filename = secure_filename(file.filename)
+            video_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(video_path)
+            # result = detect(video_path)
+
+    # image_result = "predictions.jpg"
+    # return send_file(image_result, mimetype='video/*')
+    return result
 
 
 @app.route('/result', methods=['GET'])

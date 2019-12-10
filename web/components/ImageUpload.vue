@@ -106,7 +106,8 @@ export default {
       console.log("xx 401 loading: ", this.loading);
 
       this.uploadIcon = "image-upload.png";
-      this.disableDetectBtn = true;
+      //TODO: detect again here
+      // this.disableDetectBtn = true;
     }
     // format(percentage) {
     //   return percentage === 100 ? "Full" : `${percentage}%`;
