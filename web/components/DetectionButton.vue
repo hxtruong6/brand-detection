@@ -44,15 +44,24 @@ export default {
       return this.btnState == DETECTION_STATE.LOADING;
     },
     buttonMsg() {
-      if (this.btnState == DETECTION_STATE.FAILURE) return "Detect Again";
+      if (this.btnState == DETECTION_STATE.FAILURE) {
+        this.$notify.error({
+          title: "Detection error",
+          message: "Detecting video error"
+        });
+        return "Detect Again";
+      } else if (this.btnState == DETECTION_STATE.SUCCESS) {
+        this.$notify.success({
+          title: "Detection success",
+          message: "Detecting video success"
+        });
+      }
+
       return "Detect";
     },
     onDetect() {
       this.$store.commit("video/onDetect");
       this.uploadIcon = "image-upload.png";
-      console;
-      //TODO: detect again here
-      // this.disableDetectBtn = true;
     }
   }
 };
