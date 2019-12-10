@@ -30,30 +30,18 @@
         @change="onPasteLink"
       />
     </div>-->
-    <div
-      class="imageUpload__btn detectBtn"
-      v-loading="loading"
-      element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.05)"
-    >
-      <button
-        class="detectBtn__detect"
-        :disabled="disableDetectBtn||loading"
-        @click="onDetect"
-      >Detect</button>
-      <!-- <el-progress class="detectBtn__progress" :percentage="percentage" :status="status"></el-progress> -->
-    </div>
+    <detection-button />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import EleUploadVideo from "vue-ele-upload-video";
+import DetectionButton from "~/components/DetectionButton.vue";
 
 export default {
   name: "ImageUpload",
   components: {
-    EleUploadVideo
+    DetectionButton
   },
   computed: {
     ...mapState({

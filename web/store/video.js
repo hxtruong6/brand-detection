@@ -1,19 +1,28 @@
 import FileSaver from "file-saver";
 
+const DETECTION_STATE = {
+    UN_UPLOADED: "UN_UPLOADED",
+    UN_PROCESSED: "UN_PROCESSED",
+    LOADING: "LOADING",
+    SUCCESS: "SUCCESS",
+    FAILURE: "FAILURE"
+};
+
 export const state = () => ({
     originVideo: null,
     detectedImage: null,
     url: null,
     detectedUrl: null,
     result: {},
-    loading: false
+    loading: false,
+    detectionState: DETECTION_STATE.UN_UPLOADED
 });
 
 export const mutations = {
     onFileChanged(state, originVideo) {
         state.originVideo = originVideo;
         state.url = URL.createObjectURL(originVideo);
-        console.log("xxx003 url: ", state.url);
+        state.detectionState = DETECTION_STATE.UN_PROCESSED;
     },
     async onPasteLink(state, link) {
         state.loading = true;
@@ -30,10 +39,8 @@ export const mutations = {
                 });
                 state.originVideo = file;
             });
-
-        console.log("xxx 403 blob: ", state.originVideo);
         state.loading = false;
-        console.log("xxx 401 loading: ", state.loading);
+        state.detectionState = DETECTION_STATE.UN_PROCESSED;
     },
     async onDetect(state) {
         if (!state.originVideo) return;
@@ -42,6 +49,8 @@ export const mutations = {
         let formData = new FormData();
         formData.append("file", state.originVideo);
         state.loading = true;
+        state.detectionState = DETECTION_STATE.LOADING;
+
         await this.$axios
             .post("video", formData, {
                 responseType: "blob",
@@ -64,10 +73,12 @@ export const mutations = {
                 const url = URL.createObjectURL(blob);
                 state.detectedImage = blob;
                 state.detectedUrl = url;
+                state.detectionState = DETECTION_STATE.SUCCESS;
                 // FileSaver.saveAs(blob, `prediction.jpg`);
             })
             .catch(() => {
                 console.log("DETECT FAILURE!!");
+                state.detectionState = DETECTION_STATE.FAILURE;
             })
             .finally(() => {
                 state.loading = false;
