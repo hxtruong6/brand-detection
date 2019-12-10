@@ -220,5 +220,7 @@ sw.*
 
 # For custom
 *.weights
-# *.jpg
+#*.jpg
 *.png
+Annotation_Tool/Images/*/*.jpg
+Annotation_Tool/Labels/*/*.txt
