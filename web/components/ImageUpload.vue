@@ -16,7 +16,8 @@
       <label class="dropArea__label dropArea__label--border" for="file">
         <img :src="getImgUrl(uploadIcon)" title="Upload/drop video" />
         <br />
-        <h2>Choose a video</h2>
+        <h2 v-if="!isUploaded()">Choose a video</h2>
+        <h2 v-else>Video uploaded</h2>
       </label>
     </div>
     <!-- <div class="imageUpload___pasteLink pastelink">
@@ -65,21 +66,19 @@ export default {
     return {
       uploadIcon: "video-upload.png",
       disableDetectBtn: true,
-      token: "xxx",
-      video: ""
-      // "https://s3.pstatp.com/aweme/resource/web/static/video/index/tvc-v2_30097df.mp4"
-
-      // percentage: 0,
-      // status: null
+      video: this.url || ""
     };
   },
   methods: {
+    isUploaded() {
+      return !!this.url;
+    },
     getImgUrl(pic) {
       return require("~/assets/images/" + pic);
     },
     onFileChanged(event) {
       const originVideo = event.target.files[0];
-      console.log("xxx002 video: ", originVideo);
+      // console.log("xxx002 video: ", originVideo);
       this.uploadIcon = "uploaded.png";
       this.$store.commit("video/onFileChanged", originVideo);
       this.disableDetectBtn = false;

@@ -17,9 +17,7 @@
       </div>
       <!-- <img class="image__display" :src="getDisplayImg()" /> -->
       <div class="image__display">
-        <video width="100%" controls>
-          <source :src="getDisplaySource()" id="videoId" />Your browser does not support HTML5 video.
-        </video>
+        <video width="100%" controls :src="getDisplaySource()" id="videoId"></video>
       </div>
     </div>
     <!-- <div class="imageShow__history history">
@@ -36,7 +34,10 @@ export default {
   computed: {
     ...mapState({
       detectedImage: state => state.video.detectedImage,
-      url: state => state.video.url,
+      url: state => {
+        console.log("xxx124 state video: ", state.video);
+        return state.video.url;
+      },
       detectedUrl: state => state.video.detectedUrl
     }),
     defaultImg() {
@@ -53,13 +54,18 @@ export default {
       this.isOriginImg = false;
       this.$store.commit("video/getResult");
     }
+    // url: function() {
+    //   console.log("xxx 004 upload video end: ", this.state.video);
+    //   return this.state.video.url;
+    // }
   },
   methods: {
     getImgUrl(pic) {
       return require("~/assets/images/" + pic);
     },
     getDisplaySource() {
-      console.log("xxx005 display: ", this.isOriginImg, this.url);
+      // console.log("xxx004 state Video: ", this.state.video);
+      // console.log("xxx005 display: ", this.isOriginImg, this.url);
       return this.url;
       // return this.isOriginImg && this.url
       //   ? this.url
