@@ -226,5 +226,5 @@ Annotation/Images/*/*.jpg
 Annotation/Labels/*/*.txt
 Annotation/output/*/*.jpg
 Annotation/output/*/*.txt
-train/output/*/*.jpg
-train/output/*/*.txt
+train/output/*.jpg
+train/output/*.txt
