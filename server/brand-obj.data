@@ -1,5 +1,0 @@
-classes= 5
-train  = brand-train.txt  
-valid  = brand-test.txt  
-names = brand-obj.names  
-backup = backup/

@@ -222,5 +222,9 @@ sw.*
 *.weights
 #*.jpg
 *.png
-Annotation_Tool/Images/*/*.jpg
-Annotation_Tool/Labels/*/*.txt
+Annotation/Images/*/*.jpg
+Annotation/Labels/*/*.txt
+Annotation/output/*/*.jpg
+Annotation/output/*/*.txt
+train/output/*/*.jpg
+train/output/*/*.txt
