@@ -215,7 +215,7 @@ def get_video_estimator(net, meta, video_dir):
         cls_cnt_freq[key] /= 1.0*count
 
 
-    with open('freq.json', 'w') as fb:
+    with open('output/freq.json', 'w') as fb:
         json.dump(cls_cnt_freq, fb)
 
     print('Num frame: ',count)
@@ -224,14 +224,15 @@ def get_video_estimator(net, meta, video_dir):
 def create_video_from_frames(frames_dir):
     img_array = []
 
-    for filename in sorted(glob.glob(frames_dir+'/*.jpg'), key=os.path.getmtime, reverse=True):
+    for filename in sorted(glob.glob(frames_dir+'/*.jpg'), key=os.path.getmtime, reverse=False):
+        print(filename)
         img = cv2.imread(filename)
         height, width, layers = img.shape
         size = (width,height)
         img_array.append(img)
 
 
-    out = cv2.VideoWriter('project.mp4',cv2.VideoWriter_fourcc(*'X264'),15, size)
+    out = cv2.VideoWriter('output/video_result.mp4',cv2.VideoWriter_fourcc(*'X264'),15, size)
     for i in range(len(img_array)):
         out.write(img_array[i])
 
@@ -273,7 +274,7 @@ if __name__ == "__main__":
 
     if args.input_type == 'image':
         pred_img, _ = get_prediction_image(net, meta, input_dir)
-        cv2.imwrite("prediction.jpg", pred_img)
+        cv2.imwrite("output/image_prediction.jpg", pred_img)
     elif args.input_type == 'video':
         get_video_estimator(net, meta, input_dir)
         create_video_from_frames('frames')
