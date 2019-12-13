@@ -41,5 +41,5 @@ for example:
 ```
 python darknet.py --input_type video --input_dir uploadFiles/cocacola.mp4
 ```
-- The video result at output/video_result.jpg
+- The video result at output/video_result.mp4
 - The frequency information at output/freq.json
