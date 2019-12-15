@@ -10,24 +10,27 @@ import glob
 
 def sample(probs):
     s = sum(probs)
-    probs = [a/s for a in probs]
+    probs = [a / s for a in probs]
     r = random.uniform(0, 1)
     for i in range(len(probs)):
         r = r - probs[i]
         if r <= 0:
             return i
-    return len(probs)-1
+    return len(probs) - 1
+
 
 def c_array(ctype, values):
-    arr = (ctype*len(values))()
+    arr = (ctype * len(values))()
     arr[:] = values
     return arr
+
 
 class BOX(Structure):
     _fields_ = [("x", c_float),
                 ("y", c_float),
                 ("w", c_float),
                 ("h", c_float)]
+
 
 class DETECTION(Structure):
     _fields_ = [("bbox", BOX),
@@ -44,6 +47,7 @@ class IMAGE(Structure):
                 ("c", c_int),
                 ("data", POINTER(c_float))]
 
+
 class METADATA(Structure):
     _fields_ = [("classes", c_int),
                 ("names", POINTER(c_char_p))]
@@ -52,7 +56,7 @@ class METADATA(Structure):
 dir_name = os.getcwd()
 lib_darknet_dir = os.path.join(dir_name, "libdarknet.so")
 lib_darknet_dir = lib_darknet_dir.encode('utf-8')
-#lib = CDLL("/home/pjreddie/documents/darknet/libdarknet.so", RTLD_GLOBAL)
+# lib = CDLL("/home/pjreddie/documents/darknet/libdarknet.so", RTLD_GLOBAL)
 lib = CDLL(lib_darknet_dir, RTLD_GLOBAL)
 lib.network_width.argtypes = [c_void_p]
 lib.network_width.restype = c_int
@@ -122,6 +126,7 @@ predict_image = lib.network_predict_image
 predict_image.argtypes = [c_void_p, IMAGE]
 predict_image.restype = POINTER(c_float)
 
+
 def classify(net, meta, im):
     out = predict_image(net, im)
     res = []
@@ -130,7 +135,9 @@ def classify(net, meta, im):
     res = sorted(res, key=lambda x: -x[1])
     return res
 
+
 def detect(net, meta, image, thresh=.1, hier_thresh=.5, nms=.45):
+    image = image.encode('utf-8')
     im = load_image(image, 0, 0)
     num = c_int(0)
     pnum = pointer(num)
@@ -158,26 +165,26 @@ def get_prediction_image(net, meta, image_dir):
     font_scale = 1.1
 
     cls_color = {
-            'Lavie': (0,255,0),
-            'Coca': (0,0,0),
-            'VinhHao': (255,0,0),
-            'Dasani': (255, 255,0),
-            'Aquafina': (0,0,255)
+        'Lavie': (0, 255, 0),
+        'Coca': (0, 0, 0),
+        'VinhHao': (255, 0, 0),
+        'Dasani': (255, 255, 0),
+        'Aquafina': (0, 0, 255)
     }
 
     cls = set()
 
     for det in r:
-        x,y,w,h = map(int, det[2])
-        x = x-int(w/2)
-        y = y-int(h/2)
-        text = str(det[0])
+        x, y, w, h = map(int, det[2])
+        x = x - int(w / 2)
+        y = y - int(h / 2)
+        text = str(det[0].decode('utf-8'))
         cls.add(text)
-        img = cv2.rectangle(img, (x,y), (x+w, y+h), cls_color[text], 2)
+        img = cv2.rectangle(img, (x, y), (x + w, y + h), cls_color[text], 2)
         (text_width, text_height) = cv2.getTextSize(text, font, fontScale=font_scale, thickness=1)[0]
-        box_coords = ((x, y-1), (x + text_width + 2, y-1 - text_height - 2))
+        box_coords = ((x, y - 1), (x + text_width + 2, y - 1 - text_height - 2))
         cv2.rectangle(img, box_coords[0], box_coords[1], cls_color[text], cv2.FILLED)
-        img = cv2.putText(img,text,(x-1, y-1), font, fontScale=font_scale, color=(255, 255, 255), thickness=1)
+        img = cv2.putText(img, text, (x - 1, y - 1), font, fontScale=font_scale, color=(255, 255, 255), thickness=1)
 
     return img, cls
 
@@ -186,53 +193,50 @@ def get_video_estimator(net, meta, video_dir):
     # video processing
     print('video dir: ', video_dir)
     vidcap = cv2.VideoCapture(video_dir)
-    success,image = vidcap.read()
+    success, image = vidcap.read()
     count = 0
 
     cls_cnt_freq = {
-            'Lavie': 0,
-            'Coca': 0,
-            'VinhHao': 0,
-            'Dasani': 0,
-            'Aquafina': 0
+        'Lavie': 0,
+        'Coca': 0,
+        'VinhHao': 0,
+        'Dasani': 0,
+        'Aquafina': 0
     }
 
-
     while success:
-        cur_frame_dir = "frames/frame%d.jpg"%count
-        cv2.imwrite(cur_frame_dir, image)     # save frame as JPEG file
+        cur_frame_dir = "frames/frame%d.jpg" % count
+        cv2.imwrite(cur_frame_dir, image)  # save frame as JPEG file
         predict_img, cls = get_prediction_image(net, meta, cur_frame_dir)
 
         for cls_txt in cls:
             cls_cnt_freq[cls_txt] += 1
 
         cv2.imwrite(cur_frame_dir, predict_img)
-        success,image = vidcap.read()
+        success, image = vidcap.read()
         print('Read a new frame: ', success, count)
         count += 1
 
     for key in cls_cnt_freq.keys():
-        cls_cnt_freq[key] /= 1.0*count
-
+        cls_cnt_freq[key] /= 1.0 * count
 
     with open('output/freq.json', 'w') as fb:
         json.dump(cls_cnt_freq, fb)
 
-    print('Num frame: ',count)
+    print('Num frame: ', count)
 
 
 def create_video_from_frames(frames_dir):
     img_array = []
 
-    for filename in sorted(glob.glob(frames_dir+'/*.jpg'), key=os.path.getmtime, reverse=False):
+    for filename in sorted(glob.glob(frames_dir + '/*.jpg'), key=os.path.getmtime, reverse=False):
         print(filename)
         img = cv2.imread(filename)
         height, width, layers = img.shape
-        size = (width,height)
+        size = (width, height)
         img_array.append(img)
 
-
-    out = cv2.VideoWriter('output/video_result.mp4',cv2.VideoWriter_fourcc(*'X264'),15, size)
+    out = cv2.VideoWriter('output/video_result.mp4', cv2.VideoWriter_fourcc(*'X264'), 15, size)
     for i in range(len(img_array)):
         out.write(img_array[i])
 
@@ -249,11 +253,11 @@ def parse_args():
 
 
 if __name__ == "__main__":
-    #net = load_net("cfg/densenet201.cfg", "/home/pjreddie/trained/densenet201.weights", 0)
-    #im = load_image("data/wolf.jpg", 0, 0)
-    #meta = load_meta("cfg/imagenet1k.data")
-    #r = classify(net, meta, im)
-    #print r[:10]
+    # net = load_net("cfg/densenet201.cfg", "/home/pjreddie/trained/densenet201.weights", 0)
+    # im = load_image("data/wolf.jpg", 0, 0)
+    # meta = load_meta("cfg/imagenet1k.data")
+    # r = classify(net, meta, im)
+    # print r[:10]
 
     # declare necessary directories
     weight_dir = os.path.join(dir_name, "brand-yolov3_5000.weights")
@@ -268,9 +272,8 @@ if __name__ == "__main__":
     meta = load_meta(meta_dir)
 
     args = parse_args()
-    input_dir = os.path.join(dir_name,args.input_dir)
-    input_dir = input_dir.encode('utf-8')
-
+    input_dir = os.path.join(dir_name, args.input_dir)
+    # input_dir = input_dir.encode('utf-8')
 
     if args.input_type == 'image':
         pred_img, _ = get_prediction_image(net, meta, input_dir)
@@ -280,5 +283,3 @@ if __name__ == "__main__":
         create_video_from_frames('frames')
     else:
         print('Invalid input type, image and video only')
-
-
