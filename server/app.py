@@ -6,12 +6,13 @@ import subprocess
 from subprocess import PIPE
 import re
 
-UPLOAD_FOLDER = './uploadFiles/'
+VIDEO_UPLOAD_FOLDER = './video_uploads/'
+IMAGE_UPLOAD_FOLDER = './test_img/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 ALLOWED_VIDEO_EXTENSIONS = set(['mp4'])
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['VIDEO_UPLOAD_FOLDER'] = VIDEO_UPLOAD_FOLDER
 
 result = None
 
@@ -42,7 +43,7 @@ def process_out_info(s):
     return res
 
 
-def detect(imagePath):
+def image_detector(imagePath):
     darknet = b'./darknet'
     data_file = b'configFile/butterfly-obj.data'
     config_file = b'configFile/butterfly-yolov3.cfg'
@@ -72,15 +73,27 @@ def image_detection():
         result = "Can not detect"
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            video_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            video_path = os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], filename)
             file.save(video_path)
-            result = detect(video_path)
+            result = image_detector(video_path)
 
     image_result = "predictions.jpg"
     return send_file(image_result, mimetype='image/*')
 
 
-@app.route('/video', methods=['GET', 'POST'])
+def video_detector(videoPath):
+    print("Start detecting...")
+    info = subprocess.run(["python", "darknet.py", "--input_type", "video", "--input_dir", videoPath],
+                          stdout=PIPE, stderr=PIPE)
+    # print(str(info)
+    # result = process_out_info(info.stdout.decode("utf-8"))
+    with open('freq.json', 'r') as fi:
+        print(fi.readlines())
+    print("Finish detection")
+    return result
+
+
+@app.route('/video', methods=['POST'])
 def video_detection():
     global result
     video_path = ""
@@ -94,11 +107,12 @@ def video_detection():
             flash('No selected file')
             return "No video"
         result = "Can not detect"
-        if file and allowed_video_file(file.filename):
+        # if file and allowed_video_file(file.filename):
+        if file:
             filename = secure_filename(file.filename)
-            video_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            video_path = os.path.join(app.config['VIDEO_UPLOAD_FOLDER'], filename)
             file.save(video_path)
-            # result = detect(video_path)
+            result = video_detector(video_path)
 
     # image_result = "predictions.jpg"
     # return send_file(image_result, mimetype='video/*')
