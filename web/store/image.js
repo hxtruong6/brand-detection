@@ -78,10 +78,18 @@ export const mutations = {
             .then(res => {
                 console.log("GET SUCCESS: ", res);
                 console.log("xxx 300 type of data: ", typeof res.data);
-                state.result = res.data;
+                state.result = {
+                    ok: true,
+                    data: { ...res.data },
+                    message: res.data.length || "No any detection in this image"
+                };
             })
             .catch(e => {
                 console.log("GET FAILURE!!");
+                state.result = {
+                    ok: false,
+                    message: "Get result from server error"
+                };
             });
     }
 };

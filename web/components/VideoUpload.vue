@@ -74,9 +74,7 @@ export default {
         message: "Video is ready for detecting"
       });
     },
-    checkURL(url) {
-      return url.match(/\.(jpeg|jpg|png)$/) != null;
-    },
+
     onPasteLink(event) {
       const link = event.target.value;
       this.$store.commit("video/onPasteLink", link);

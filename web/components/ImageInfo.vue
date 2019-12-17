@@ -44,16 +44,21 @@ export default {
   },
   watch: {
     result: function(vals) {
+      console.log("xx500 vals: ", vals);
+      if (!vals.ok) return;
+      const { data } = vals;
       this.items = [];
-      for (let i = 0; i < vals.length; i++) {
-        const { class: name, confidence } = vals[i];
+      console.log("xx501 vals: ", data);
+      Object.keys(data).forEach((item, i) => {
+        const { class: name, confidence } = data[item];
         this.items.push({
           key: `img_res_${i}`,
           name,
           confidence: (confidence * 100).toFixed(2),
           brand: this.brand[String(name).toLowerCase()]
         });
-      }
+      });
+      console.log("xxx 502 tesm: ", this.items);
     }
   }
 };

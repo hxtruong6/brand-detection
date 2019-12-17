@@ -45,8 +45,9 @@ export default {
   },
   watch: {
     result: function(vals) {
+      if (!vals.ok) return;
       console.log("xxx 310 result change: ", vals);
-      const { name, second, confidence, percentCover } = val;
+      const { data } = vals;
       this.items = [];
       for (let i = 0; i < vals.length; i++) {
         const { class: name, confidence, percentCover } = vals[i];

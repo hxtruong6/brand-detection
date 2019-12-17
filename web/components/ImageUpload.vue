@@ -59,9 +59,12 @@ export default {
     return {
       uploadIcon: "image-upload.png",
       disableDetectBtn: true
-      // percentage: 0,
-      // status: null
     };
+  },
+  watch: {
+    detectedUrl: function(val) {
+      this.disableDetectBtn = false;
+    }
   },
   methods: {
     getImgUrl(pic) {
@@ -72,21 +75,17 @@ export default {
       this.uploadIcon = "image-uploaded.png";
       this.$store.commit("image/onFileChanged", originImage);
       this.disableDetectBtn = false;
-    },
-    checkURL(url) {
-      return url.match(/\.(jpeg|jpg|png)$/) != null;
+      this.$notify.success({
+        title: "Uploading image success",
+        message: "Image is ready for detecting"
+      });
     },
     onPasteLink(event) {
-      // Test: https://pbs.twimg.com/media/DiLYBR9VMAAfvSU.jpg
       const link = event.target.value;
-      // if (this.checkURL(link)) {
       this.$store.commit("image/onPasteLink", link);
       this.disableDetectBtn = false;
-      // }
     },
-    // sleep(ms) {
-    //   return new Promise(resolve => setTimeout(resolve, ms));
-    // },
+
     onDetect() {
       this.$store.commit("image/onDetect");
       console.log("xx 401 loading: ", this.loading);
@@ -94,9 +93,6 @@ export default {
       this.uploadIcon = "image-upload.png";
       this.disableDetectBtn = true;
     }
-    // format(percentage) {
-    //   return percentage === 100 ? "Full" : `${percentage}%`;
-    // }
   }
 };
 </script>

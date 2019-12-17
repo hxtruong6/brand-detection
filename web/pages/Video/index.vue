@@ -29,5 +29,6 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   height: 100%;
+  max-height: 93vh;
 }
 </style>
