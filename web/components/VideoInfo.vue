@@ -9,13 +9,18 @@
         </div>
         <div class="Info__percentCover">
           <span>Percent cover:</span>
-          {{percentCover}}
+          {{item.cover}}%
         </div>
 
-        <div class="Info__description">
-          <span>Description:</span>
-          {{item.brand.description}}
+        <div class="Info__freq">
+          <span>Frequently:</span>
+          {{item.freq}}%
         </div>
+
+        <el-collapse class="Info__description" style="color: red">
+          <el-collapse-item title="Description">{{item.brand.description}}</el-collapse-item>
+        </el-collapse>
+
         <div class="Info__break" v-show="i!=items.length-1" />
       </div>
     </div>
@@ -46,18 +51,21 @@ export default {
   watch: {
     result: function(vals) {
       if (!vals.ok) return;
-      console.log("xxx 310 result change: ", vals);
       const { data } = vals;
+      console.log("xxx 311 data: ", data);
+
       this.items = [];
-      for (let i = 0; i < vals.length; i++) {
-        const { class: name, confidence, percentCover } = vals[i];
+      for (let i = 0; i < data.length; i++) {
+        const { name, cover, freq } = data[i];
         this.items.push({
-          key: `img_res_${i}`,
+          key: `vi_res_${i}`,
           name,
-          confidence: (confidence * 100).toFixed(2),
+          freq,
+          cover,
           brand: this.brand[String(name).toLowerCase()]
         });
       }
+      console.log("xxx 313 result : ", this.items);
     }
   }
 };
@@ -75,6 +83,7 @@ export default {
 
   &__wrap {
     overflow: scroll;
+    height: 100%;
   }
 
   &__display {
@@ -102,14 +111,34 @@ export default {
       }
     }
   }
+
+  &__description {
+    & > div {
+      background-color: $third-color-light;
+      font-size: 2rem;
+    }
+  }
+
   &__percentCover {
     font-size: 2.5rem;
     background-color: #a1dbf8;
-    padding: 5px;
+    padding: 4px;
+    margin: 2px 0;
     border-radius: 3px;
   }
+
+  &__freq {
+    font-size: 2.5rem;
+    background-color: #f7ea72;
+    padding: 4px;
+    margin: 2px 0;
+    border-radius: 3px;
+  }
+
   &__notify {
     margin: auto;
+    text-align: center;
+    font-size: 2rem;
   }
 
   &__break {

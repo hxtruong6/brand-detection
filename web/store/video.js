@@ -76,12 +76,20 @@ export const mutations = {
             })
             .then(res => {
                 console.log("DETECT SUCCESS!! ", res);
-                const blob = new Blob([res.data], { type: "video/*" });
-                const url = URL.createObjectURL(blob);
+
+                var m1 = new MediaSource(res.data);
+
+                const blob = new Blob([res.data], {
+                    type: "video/x-msvideo"
+                });
+
+                var m2 = new MediaSource(blob);
+
+                const url = URL.createObjectURL(m2);
                 state.detectedImage = blob;
                 state.detectedUrl = url;
                 state.detectionState = DETECTION_STATE.SUCCESS;
-                // FileSaver.saveAs(blob, `prediction.jpg`);
+                FileSaver.saveAs(blob, `detection.avi`);
             })
             .catch(err => {
                 console.log("DETECT FAILURE!! ", err);
@@ -102,7 +110,24 @@ export const mutations = {
             .then(res => {
                 console.log("GET SUCCESS: ", res);
                 console.log("xxx 300 type of data: ", typeof res.data);
-                state.result = { ok: true, ...res.data };
+                let data = [];
+                Object.keys(res.data["freq"]).forEach(item => {
+                    if (
+                        res.data["freq"][item] > 0 ||
+                        res.data["cover"][item] > 0
+                    ) {
+                        data.push({
+                            name: item,
+                            freq: (res.data["freq"][item] * 100).toFixed(2),
+                            cover: (res.data["cover"][item] * 100).toFixed(2)
+                        });
+                    }
+                });
+                state.result = {
+                    ok: true,
+                    data,
+                    message: data.length || "No result for this video"
+                };
             })
             .catch(e => {
                 console.log("GET FAILURE!!");

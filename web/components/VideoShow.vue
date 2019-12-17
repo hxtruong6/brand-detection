@@ -15,14 +15,13 @@
           @click="selectOriginImg(false)"
         >Detected Video</h3>
       </div>
-      <!-- <img class="image__display" :src="getDisplayImg()" /> -->
       <div class="image__display">
         <video width="100%" controls :src="getDisplaySource()" id="videoId"></video>
       </div>
     </div>
-    <!-- <div class="imageShow__history history">
+    <div class="imageShow__history history">
       <div class="history__title">History</div>
-    </div>-->
+    </div>
   </div>
 </template>
 
@@ -53,24 +52,22 @@ export default {
       this.isOriginImg = false;
       this.$store.commit("video/getResult");
     }
-    // url: function() {
-    //   console.log("xxx 004 upload video end: ", this.state.video);
-    //   return this.state.video.url;
-    // }
   },
   methods: {
     getImgUrl(pic) {
       return require("~/assets/images/" + pic);
     },
     getDisplaySource() {
-      // console.log("xxx004 state Video: ", this.state.video);
-      // console.log("xxx005 display: ", this.isOriginImg, this.url);
+      console.log(
+        "xxx005 display: ",
+        this.isOriginImg,
+        this.url,
+        this.detectedImage,
+        this.detectedUrl
+      );
+
+      if (this.detectedUrl && !this.isOriginImg) return this.detectedUrl;
       return this.url;
-      // return this.isOriginImg && this.url
-      //   ? this.url
-      //   : !this.isOriginImg && this.detectedUrl
-      //   ? this.detectedUrl
-      //   : this.defaultImg;
     },
     selectOriginImg(value) {
       this.isOriginImg = Boolean(value);

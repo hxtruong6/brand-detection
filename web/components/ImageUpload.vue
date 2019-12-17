@@ -17,7 +17,7 @@
       <br />
       <h2>Choose a file</h2>
     </label>
-    <div class="imageUpload___pasteLink pastelink">
+    <!-- <div class="imageUpload___pasteLink pastelink">
       <h2 class="pastelink__title">Paste URL</h2>
       <input
         class="pastelink__input"
@@ -26,7 +26,7 @@
         title="URL image"
         @change="onPasteLink"
       />
-    </div>
+    </div>-->
     <div
       class="imageUpload__btn detectBtn"
       v-loading="loading"
