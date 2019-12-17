@@ -173,20 +173,23 @@ def get_prediction_image(net, meta, image_dir):
     }
 
     cls = set()
-
+    confidence_cls = []
     for det in r:
         x, y, w, h = map(int, det[2])
         x = x - int(w / 2)
         y = y - int(h / 2)
         text = str(det[0].decode('utf-8'))
         cls.add(text)
+        confidence_cls.append(
+            {'class': text, 'confidence': det[1]})
+
         img = cv2.rectangle(img, (x, y), (x + w, y + h), cls_color[text], 2)
         (text_width, text_height) = cv2.getTextSize(text, font, fontScale=font_scale, thickness=1)[0]
         box_coords = ((x, y - 1), (x + text_width + 2, y - 1 - text_height - 2))
         cv2.rectangle(img, box_coords[0], box_coords[1], cls_color[text], cv2.FILLED)
         img = cv2.putText(img, text, (x - 1, y - 1), font, fontScale=font_scale, color=(255, 255, 255), thickness=1)
 
-    return img, cls
+    return img, cls, confidence_cls
 
 
 def get_video_estimator(net, meta, video_dir):
@@ -207,7 +210,7 @@ def get_video_estimator(net, meta, video_dir):
     while success:
         cur_frame_dir = "frames/frame%d.jpg" % count
         cv2.imwrite(cur_frame_dir, image)  # save frame as JPEG file
-        predict_img, cls = get_prediction_image(net, meta, cur_frame_dir)
+        predict_img, cls, _ = get_prediction_image(net, meta, cur_frame_dir)
 
         for cls_txt in cls:
             cls_cnt_freq[cls_txt] += 1
@@ -224,11 +227,13 @@ def get_video_estimator(net, meta, video_dir):
         json.dump(cls_cnt_freq, fb)
 
     print('Num frame: ', count)
+    return cls_cnt_freq
 
 
 def create_video_from_frames(frames_dir):
     img_array = []
-
+    print("frame: ", frames_dir)
+    print("curr dir: ", dir_name)
     for filename in sorted(glob.glob(frames_dir + '/*.jpg'), key=os.path.getmtime, reverse=False):
         print(filename)
         img = cv2.imread(filename)
@@ -236,7 +241,7 @@ def create_video_from_frames(frames_dir):
         size = (width, height)
         img_array.append(img)
 
-    out = cv2.VideoWriter('output/video_result.mp4', cv2.VideoWriter_fourcc(*'X264'), 15, size)
+    out = cv2.VideoWriter('output/video_result.avi', cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
     for i in range(len(img_array)):
         out.write(img_array[i])
 
@@ -276,10 +281,12 @@ if __name__ == "__main__":
     # input_dir = input_dir.encode('utf-8')
 
     if args.input_type == 'image':
-        pred_img, _ = get_prediction_image(net, meta, input_dir)
+        pred_img, _, confidence_cls = get_prediction_image(net, meta, input_dir)
+        print(confidence_cls)
         cv2.imwrite("output/image_prediction.jpg", pred_img)
     elif args.input_type == 'video':
-        get_video_estimator(net, meta, input_dir)
+        video_estimation = get_video_estimator(net, meta, input_dir)
+        print(video_estimation)
         create_video_from_frames('frames')
-    else:
-        print('Invalid input type, image and video only')
+else:
+    print('Invalid input type, image and video only')

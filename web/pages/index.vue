@@ -1,22 +1,22 @@
 <template>
   <div class="detector">
-    <ImageUpload></ImageUpload>
-    <ImageShow></ImageShow>
-    <ImageInfo></ImageInfo>
+    <VideoUpload></VideoUpload>
+    <VideoShow></VideoShow>
+    <VideoInfo></VideoInfo>
   </div>
 </template>
 
 <script>
-import ImageUpload from "~/components/ImageUpload.vue";
-import ImageShow from "~/components/ImageShow.vue";
-import ImageInfo from "~/components/ImageInfo.vue";
+import VideoUpload from "~/components/VideoUpload.vue";
+import VideoShow from "~/components/VideoShow.vue";
+import VideoInfo from "~/components/VideoInfo.vue";
 
 export default {
   name: "DetectorPage",
   components: {
-    ImageUpload,
-    ImageShow,
-    ImageInfo
+    VideoUpload,
+    VideoShow,
+    VideoInfo
   }
 };
 </script>
