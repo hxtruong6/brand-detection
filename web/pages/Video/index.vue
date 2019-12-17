@@ -1,5 +1,5 @@
 <template>
-  <div class="detector">
+  <div class="videoDetector">
     <VideoUpload></VideoUpload>
     <VideoShow></VideoShow>
     <VideoInfo></VideoInfo>
