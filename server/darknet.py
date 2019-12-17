@@ -161,6 +161,7 @@ def detect(net, meta, image, thresh=.1, hier_thresh=.5, nms=.45):
 def get_prediction_image(net, meta, image_dir):
     r = detect(net, meta, image_dir)
     img = cv2.imread(image_dir)
+    img_h, img_w = img.shape[:2]
     font = cv2.FONT_HERSHEY_PLAIN
     font_scale = 1.1
 
@@ -174,6 +175,13 @@ def get_prediction_image(net, meta, image_dir):
 
     cls = set()
     confidence_cls = []
+    cum_area =  {
+        'Lavie': 0.0,
+        'Coca': 0.0,
+        'VinhHao': 0.0,
+        'Dasani': 0.0,
+        'Aquafina': 0.0
+    }
     for det in r:
         x, y, w, h = map(int, det[2])
         x = x - int(w / 2)
@@ -183,13 +191,15 @@ def get_prediction_image(net, meta, image_dir):
         confidence_cls.append(
             {'class': text, 'confidence': det[1]})
 
+        cum_area[text] += w*h / (img_w * img_h)
         img = cv2.rectangle(img, (x, y), (x + w, y + h), cls_color[text], 2)
         (text_width, text_height) = cv2.getTextSize(text, font, fontScale=font_scale, thickness=1)[0]
         box_coords = ((x, y - 1), (x + text_width + 2, y - 1 - text_height - 2))
         cv2.rectangle(img, box_coords[0], box_coords[1], cls_color[text], cv2.FILLED)
         img = cv2.putText(img, text, (x - 1, y - 1), font, fontScale=font_scale, color=(255, 255, 255), thickness=1)
 
-    return img, cls, confidence_cls
+    print(cum_area)
+    return img, cls, confidence_cls, cum_area
 
 
 def get_video_estimator(net, meta, video_dir):
@@ -207,24 +217,41 @@ def get_video_estimator(net, meta, video_dir):
         'Aquafina': 0
     }
 
+    video_cum_area_ratio = {
+        'Lavie': 0.0,
+        'Coca': 0.0,
+        'VinhHao': 0.0,
+        'Dasani': 0.0,
+        'Aquafina': 0.0
+    }
+
     while success:
         cur_frame_dir = "frames/frame%d.jpg" % count
         cv2.imwrite(cur_frame_dir, image)  # save frame as JPEG file
-        predict_img, cls, _ = get_prediction_image(net, meta, cur_frame_dir)
+        predict_img, cls, _, cum_area = get_prediction_image(net, meta, cur_frame_dir)
 
         for cls_txt in cls:
             cls_cnt_freq[cls_txt] += 1
+
+        for key in cum_area.keys():
+            video_cum_area_ratio[key] += cum_area[key]
 
         cv2.imwrite(cur_frame_dir, predict_img)
         success, image = vidcap.read()
         print('Read a new frame: ', success, count)
         count += 1
 
+    for key in video_cum_area_ratio.keys():
+        video_cum_area_ratio[key] /= (cls_cnt_freq[key] *1.0) 
+
     for key in cls_cnt_freq.keys():
         cls_cnt_freq[key] /= 1.0 * count
 
     with open('output/freq.json', 'w') as fb:
         json.dump(cls_cnt_freq, fb)
+
+    with open('output/area.json', 'w') as fb:
+        json.dump(video_cum_area_ratio, fb)
 
     print('Num frame: ', count)
     return cls_cnt_freq
@@ -281,7 +308,7 @@ if __name__ == "__main__":
     # input_dir = input_dir.encode('utf-8')
 
     if args.input_type == 'image':
-        pred_img, _, confidence_cls = get_prediction_image(net, meta, input_dir)
+        pred_img, _, confidence_cls, _ = get_prediction_image(net, meta, input_dir)
         print(confidence_cls)
         cv2.imwrite("output/image_prediction.jpg", pred_img)
     elif args.input_type == 'video':
