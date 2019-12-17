@@ -198,7 +198,6 @@ def get_prediction_image(net, meta, image_dir):
         cv2.rectangle(img, box_coords[0], box_coords[1], cls_color[text], cv2.FILLED)
         img = cv2.putText(img, text, (x - 1, y - 1), font, fontScale=font_scale, color=(255, 255, 255), thickness=1)
 
-    print(cum_area)
     return img, cls, confidence_cls, cum_area
 
 

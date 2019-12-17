@@ -11,10 +11,10 @@
       accept="image/*"
       name="file"
       id="file"
-    >
+    />
     <label class="dropArea__label dropArea__label--border" for="file">
-      <img :src="getImgUrl(uploadIcon)" title="Upload/drop image">
-      <br>
+      <img :src="getImgUrl(uploadIcon)" title="Upload/drop image" />
+      <br />
       <h2>Choose a file</h2>
     </label>
     <div class="imageUpload___pasteLink pastelink">
@@ -22,10 +22,10 @@
       <input
         class="pastelink__input"
         type="text"
-        placeholder="www.common-buckeye.jpg"
+        placeholder="www.coca-cola.jpg"
         title="URL image"
         @change="onPasteLink"
-      >
+      />
     </div>
     <div
       class="imageUpload__btn detectBtn"
@@ -80,8 +80,8 @@ export default {
       // Test: https://pbs.twimg.com/media/DiLYBR9VMAAfvSU.jpg
       const link = event.target.value;
       // if (this.checkURL(link)) {
-        this.$store.commit("image/onPasteLink", link);
-        this.disableDetectBtn = false;
+      this.$store.commit("image/onPasteLink", link);
+      this.disableDetectBtn = false;
       // }
     },
     // sleep(ms) {

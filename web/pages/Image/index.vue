@@ -22,10 +22,12 @@ export default {
 </script>
 
 <style>
-.detector {
+.imgDetector {
   display: flex;
   flex: 1 1 0;
   flex-direction: row;
   justify-content: space-between;
+  height: 100%;
+  max-height: 92vh;
 }
 </style>

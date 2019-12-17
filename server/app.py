@@ -60,23 +60,23 @@ def on_detector(file_path, type="image"):
 
 @app.route('/image', methods=['POST'])
 def image_detection():
-    global result
-    file_path = None
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return "No image"
-        file = request.files['file']
-        if file.filename == '':
-            flash('No selected file')
-            return "No image"
-        result = "Can not detect"
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file_path = dir_name + os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            result = on_detector(file_path, "image")
+    # global result
+    # file_path = None
+    # if request.method == 'POST':
+    #     # check if the post request has the file part
+    #     if 'file' not in request.files:
+    #         flash('No file part')
+    #         return "No image"
+    #     file = request.files['file']
+    #     if file.filename == '':
+    #         flash('No selected file')
+    #         return "No image"
+    #     result = "Can not detect"
+    #     if file and allowed_file(file.filename):
+    #         filename = secure_filename(file.filename)
+    #         file_path = dir_name + os.path.join(app.config['IMAGE_UPLOAD_FOLDER'], filename)
+    #         file.save(file_path)
+    #         result = on_detector(file_path, "image")
 
     image_result = os.path.join(dir_name, "output/image_prediction.jpg")
     print(image_result)
@@ -104,7 +104,7 @@ def video_detection():
             file.save(file_path)
             result = on_detector(file_path, "video")
 
-    video_result = os.path.join(dir_name, "output/video_result.mp4")
+    video_result = os.path.join(dir_name, "output/video_result.avi")
     return send_file(video_result, mimetype='video/*')
 
 
@@ -112,7 +112,8 @@ def video_detection():
 def image_result():
     global result
     print("Get Result: " + str(result))
-    return jsonify(result)
+    # return jsonify(result)
+    return jsonify([{'class': 'Lavie', 'confidence': 0.962700366973877}, {'class': 'Lavie', 'confidence': 0.9570418000221252}, {'class': 'Lavie', 'confidence': 0.9342136383056641}, {'class': 'Lavie', 'confidence': 0.902835488319397}, {'class': 'Lavie', 'confidence': 0.8000869154930115}, {'class': 'Lavie', 'confidence': 0.13846519589424133}])
 
 
 if __name__ == '__main__':

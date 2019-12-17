@@ -1,29 +1,26 @@
 <template>
-  <div class="imageInfo">
-    <div class="imageInfo__display" v-if="hasResult()">
-      <img width="128px" :src="brand.logo" />
-      <div class="imageInfo__name">
-        <span>Name:</span>
-        {{name}}
-      </div>
-      <div class="imageInfo__time">
-        <span>Predicted in:</span>
-        {{second}} seconds
-      </div>
-      <div class="imageInfo__confidence">
-        <span>Confidence:</span>
-        {{confidence}}
-      </div>
-      <div class="imageInfo__percentCover">
-        <span>Percent cover:</span>
-        {{percentCover}}
-      </div>
-      <div class="imageInfo__description">
-        <span>Description:</span>
-        {{brand.description}}
+  <div class="Info">
+    <div class="Info__wrap" v-if="items.length">
+      <div class="Info__display" v-for="(item, i) in items" v-bind:key="item.key">
+        <img width="64px" :src="item.brand.logo" />
+        <div class="Info__name">
+          <span>Name:</span>
+          {{item.name}}
+        </div>
+        <div class="Info__percentCover">
+          <span>Percent cover:</span>
+          {{percentCover}}
+        </div>
+
+        <div class="Info__description">
+          <span>Description:</span>
+          {{item.brand.description}}
+        </div>
+        <div class="Info__break" v-show="i!=items.length-1" />
       </div>
     </div>
-    <div class="imageInfo__notify" v-if="!hasResult()">
+    <div class="Info__notify" v-else>
+      <img width="80%" src="https://i.imgur.com/jtkTPvb.gif?noredirect" />
       <div>No information</div>
       <div style="color: red">{{result.message}}</div>
     </div>
@@ -34,68 +31,50 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "ImageInfo",
+  name: "VideoInfo",
   computed: {
     ...mapState({
       result: state => state.video.result,
-      butterfly: state => {
-        // console.log("xxx 320 state: ", state);
-        if (state.video.result && state.video.result.name) {
-          const name = state.video.result.name;
-          // console.log("xxx 325 keys: ", Object.keys(state.butterfly.data));
-          const butterfly = Object.keys(state.butterfly.data).find(
-            b => b.toLowerCase() === name.toLowerCase()
-          );
-          // console.log("xxx 305 butterfly: ", butterfly);
-          return state.butterfly.data[butterfly] || {};
-        }
-      },
-      brand: state => {
-        if (state.video.result && state.video.result.name) {
-          const name = state.video.result.name;
-          const nameMapping = Object.keys(state.brand.data).find(
-            b => b.toLowerCase() === name.toLowerCase()
-          );
-          return state.brand.data[nameMapping];
-        }
-        return {};
-      }
+      brand: state => state.brand.data
     })
   },
   data() {
     return {
-      name: "",
-      second: "",
-      confidence: "",
-      percentCover: ""
+      items: []
     };
   },
   watch: {
-    result: function(val) {
-      console.log("xxx 310 result change: ", val);
+    result: function(vals) {
+      console.log("xxx 310 result change: ", vals);
       const { name, second, confidence, percentCover } = val;
-      this.name = name;
-      this.second = second;
-      this.confidence = confidence;
-      this.percentCover = percentCover;
-    }
-  },
-  methods: {
-    hasResult() {
-      console.log("xxx512 has result: ", this.result);
-      return this.result && this.result.ok;
+      this.items = [];
+      for (let i = 0; i < vals.length; i++) {
+        const { class: name, confidence, percentCover } = vals[i];
+        this.items.push({
+          key: `img_res_${i}`,
+          name,
+          confidence: (confidence * 100).toFixed(2),
+          brand: this.brand[String(name).toLowerCase()]
+        });
+      }
     }
   }
 };
 </script>
 
 <style lang='scss' scoped>
-.imageInfo {
+.Info {
   flex: 1.5 1 0;
+  flex-flow: column;
+
   background-color: $third-color-light;
   font-size: 1.8rem;
   display: flex;
   justify-content: center;
+
+  &__wrap {
+    overflow: scroll;
+  }
 
   &__display {
     margin: 4px;
@@ -130,6 +109,11 @@ export default {
   }
   &__notify {
     margin: auto;
+  }
+
+  &__break {
+    height: 3px;
+    background-color: $third-color-dark;
   }
 }
 </style>

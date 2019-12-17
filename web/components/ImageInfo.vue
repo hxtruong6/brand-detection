@@ -1,27 +1,27 @@
 <template>
   <div class="imageInfo">
-    <div class="imageInfo__display" v-if="name">
-      <div class="imageInfo__name">
-        <span>Name:</span>
-        {{name}}
+    <div class="imageInfo__wrap" v-if="items.length">
+      <div class="imageInfo__display" v-for="(item, i) in items" v-bind:key="item.key">
+        <img width="64px" :src="item.brand.logo" />
+        <div class="imageInfo__name">
+          <span>Name:</span>
+          {{item.name}}
+        </div>
+        <div class="imageInfo__confidence">
+          <span>Confidence:</span>
+          {{item.confidence}}%
+        </div>
+        <div class="imageInfo__description">
+          <span>Description:</span>
+          {{item.brand.description}}
+        </div>
+        <div class="imageInfo__break" v-show="i!=items.length-1" />
       </div>
-      <div class="imageInfo__time">
-        <span>Predicted in:</span>
-        {{second}} seconds
-      </div>
-      <div class="imageInfo__confidence">
-        <span>Confidence:</span>
-        {{confidence}}
-      </div>
-      <div class="imageInfo__description">
-        <span>Description:</span>
-        {{butterfly.description}}
-      </div>
-      <a class="imageInfo__link" :href="butterfly.link" target="_blank">Detail more...</a>
     </div>
-    <div class="imageInfo__notify" v-if="!name&&!second">
-      <!-- <img src="https://cdn.dribbble.com/users/563824/screenshots/3907093/escalade.gif"> -->
-      No information
+    <div class="imageInfo__notify" v-else>
+      <img width="80%" src="https://i.imgur.com/jtkTPvb.gif?noredirect" />
+      <div>No information</div>
+      <div style="color: red">{{result.message}}</div>
     </div>
   </div>
 </template>
@@ -34,34 +34,26 @@ export default {
   computed: {
     ...mapState({
       result: state => state.image.result,
-      butterfly: state => {
-        // console.log("xxx 320 state: ", state);
-        if (state.image.result && state.image.result.name) {
-          const name = state.image.result.name;
-          // console.log("xxx 325 keys: ", Object.keys(state.butterfly.data));
-          const butterfly = Object.keys(state.butterfly.data).find(
-            b => b.toLowerCase() === name.toLowerCase()
-          );
-          // console.log("xxx 305 butterfly: ", butterfly);
-          return state.butterfly.data[butterfly] || {};
-        }
-      }
+      brand: state => state.brand.data
     })
   },
   data() {
     return {
-      name: "",
-      second: "",
-      confidence: ""
+      items: []
     };
   },
   watch: {
-    result: function(val) {
-      console.log("xxx 310 result change: ", val);
-      const { name, second, confidence } = val;
-      this.name = name;
-      this.second = second;
-      this.confidence = confidence;
+    result: function(vals) {
+      this.items = [];
+      for (let i = 0; i < vals.length; i++) {
+        const { class: name, confidence } = vals[i];
+        this.items.push({
+          key: `img_res_${i}`,
+          name,
+          confidence: (confidence * 100).toFixed(2),
+          brand: this.brand[String(name).toLowerCase()]
+        });
+      }
     }
   }
 };
@@ -70,10 +62,15 @@ export default {
 <style lang='scss' scoped>
 .imageInfo {
   flex: 1.5 1 0;
+  flex-flow: column;
   background-color: $third-color-light;
   font-size: 1.5rem;
   display: flex;
   justify-content: center;
+
+  &__wrap {
+    overflow: scroll;
+  }
 
   &__display {
     margin: 4px;
@@ -103,6 +100,13 @@ export default {
 
   &__notify {
     margin: auto;
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  &__break {
+    height: 3px;
+    background-color: $third-color-dark;
   }
 }
 </style>

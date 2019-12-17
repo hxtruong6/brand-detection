@@ -15,7 +15,7 @@
           @click="selectOriginImg(false)"
         >Detected Image</h3>
       </div>
-      <img class="image__display" :src="getDisplayImg()">
+      <img class="image__display" :src="getDisplayImg()" />
     </div>
     <div class="imageShow__history history">
       <div class="history__title">History</div>
@@ -35,7 +35,7 @@ export default {
       detectedUrl: state => state.image.detectedUrl
     }),
     defaultImg() {
-      return "https://nature.mdc.mo.gov/sites/default/files/styles/centered_full/public/webform/2018/Common%20Buckeye-20181011-2222.jpeg";
+      return require("~/assets/images/brandTag.png");
     }
   },
   data: function() {
