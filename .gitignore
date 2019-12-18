@@ -220,8 +220,6 @@ sw.*
 
 # For custom
 *.weights
-#*.jpg
-*.png
 Annotation/Images/*/*.jpg
 Annotation/Labels/*/*.txt
 Annotation/output/*/*.jpg
