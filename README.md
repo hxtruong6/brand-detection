@@ -2,15 +2,14 @@
 ## 1. Giới thiệu
 Chương trình gồm 2 chức năng chính, trên 5 loại thương hiệu nước uống tại Việt Nam (Aquafina, Coca cola, Vĩnh Hảo, Dasani và Lavie):   
 - upload ảnh và detect logo của các thương hiệu nước uống.
-- upload video và kiểm tra tần suất xuất hiện và độ bao phủ trung bình trên frame ảnh của loại nhãn hàng.   
-Video demo của từng chức năng:
-- Hình ảnh:
-- Video: 
+- upload video và kiểm tra tần suất xuất hiện và độ bao phủ trung bình trên frame ảnh của loại nhãn hàng.
+
+Video demo của từng chức năng:https://www.youtube.com/watch?v=4fUWmV3Ccmg&feature=youtu.be
 ## 2. Hướng dẫn thực thi chương trình
-Thực hiện lần lượt các bước sau
+Thực hiện lần lượt các bước sau:
 ### B1: Download mã nguồn chương trình
 ```
-git clone 
+git clone https://github.com/hxtruong/brand-detection.git
 ```
 ```
 ROOT = {đường dẫn đến repo đã clone về}
