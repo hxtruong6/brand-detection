@@ -2,7 +2,7 @@
 ## 1. Giới thiệu
 Chương trình gồm 2 chức năng chính, trên 5 loại thương hiệu nước uống tại Việt Nam (Aquafina, Coca cola, Vĩnh Hảo, Dasani và Lavie):   
 - upload ảnh và detect logo của các thương hiệu nước uống.
-- upload video và kiểm tra tần suất xuất hiện và độ bao phủ trung bình trên frame ảnh của loại nhãn hàng.
+- upload video và kiểm tra tần suất xuất hiện và độ bao phủ trung bình trên frame ảnh của loại nhãn hàng (thời gian thực thi tương đối chậm nếu video quá dài vì không có hỗ trợ GPU).
 
 Video demo của từng chức năng:https://www.youtube.com/watch?v=4fUWmV3Ccmg&feature=youtu.be
 ## 2. Hướng dẫn thực thi chương trình
