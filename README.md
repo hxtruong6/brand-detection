@@ -50,7 +50,7 @@ sudo npm install -g yarn
 ```
 cd ROOT/web
 yarn
-yarn dv
+yarn dev
 ```
 
 ### B4: Trải nghiệm chương trình
