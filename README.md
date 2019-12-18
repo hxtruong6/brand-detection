@@ -1,68 +1,60 @@
-# Brand detection project
+# Nhận diện thương hiệu nước uống tại Việt Nam
+## 1. Giới thiệu
+Chương trình gồm 2 chức năng chính, trên 5 loại thương hiệu nước uống tại Việt Nam (Aquafina, Coca cola, Vĩnh Hảo, Dasani và Lavie):   
+- upload ảnh và detect logo của các thương hiệu nước uống.
+- upload video và kiểm tra tần suất xuất hiện và độ bao phủ trung bình trên frame ảnh của loại nhãn hàng.   
+Video demo của từng chức năng:
+- Hình ảnh:
+- Video: 
+## 2. Hướng dẫn thực thi chương trình
+Thực hiện lần lượt các bước sau
+### B1: Download mã nguồn chương trình
+```
+git clone 
+```
+```
+ROOT = {đường dẫn đến repo đã clone về}
+```
 
-## 1. Web
+### B2: Khởi động server
+Download file weight cho mô hình yolo và đặt ở trong thư mục ROOT/server: https://drive.google.com/open?id=1ctJCv7yHS-MxhtDTRJ3twJv5zA-ymQtk   
+#### Cài đặt các thư viện cần thiết
+- Tạo và khởi động môi trường ảo
+```
+pip3 install virtualenv
+virtualenv ~/venv
+source ~/venv/bin/activate
+```
+- Cài đặt Flask
+```
+pip install Flask
+```
+- Cài đặt Open CV
+```
+pip install opencv-python
+```
+#### Khởi động server
+```
+cd ROOT/server
+python app.py
+```
 
-Website is created for support user using. It allow for upload _image_ .or _video_ to detect their brand.
+### B3: Khởi động UI
+Mở 1 terminal mới
+#### Cài đặt yarn
+```
+sudo apt-get install npm
+sudo npm install -g yarn
+```
 
-The result will show:
+#### Khởi động UI
+```
+cd ROOT/web
+yarn
+yarn dv
+```
 
--   Image: the detected image of the origin uploaded image and recognized brands with logo, confidence, description,..
--   Video: the detected video (_in process (not completed)_) and recognized brands with _frequently_ appear percent and _cover_ percent in origin video.
+### B4: Trải nghiệm chương trình
+Mở trình duyệt web và nhập: localhost:3000
 
-### How to run
 
-1. Install `npm` if not install yet
-
-    `sudo apt-get install npm`
-
-2. Install `yarn` if not install yet
-
-    `sudo npm install -g yarn`
-
-3. Install dependencies
-
-    `yarn`
-
-4. Run web
-
-    `yarn dev`
-
-=> Web will run at `http://localhost:3000/`. Open to using.
-
-_Note_: you can skip step 1 and 2. Step 3 and 4 is required
-
-### Result
-
--   Image UI
-    ![Web UI](https://user-images.githubusercontent.com/24609363/71054523-e0d9ef00-2184-11ea-9cab-ad7a9122f751.png)
-
--   Video UI
-    ![Video UI](https://user-images.githubusercontent.com/24609363/71054949-74f88600-2186-11ea-969b-e74a8d737594.png)
-
-<details><summary>Click see result</summary>
-<p>
-
-### 1.Image
-
--   Test #1
-    ![Test01](https://user-images.githubusercontent.com/24609363/71054522-e0415880-2184-11ea-9fdd-890affb02376.png)
-    ![Test01 Result](https://user-images.githubusercontent.com/24609363/71054697-6e1d4380-2185-11ea-9854-b4511b60ef50.png)
-
--   Test #2
-    ![Test02](https://user-images.githubusercontent.com/24609363/71054625-4332ef80-2185-11ea-97b0-3b3157c8f6c8.png)
-    ![Test01 Result](https://user-images.githubusercontent.com/24609363/71054624-429a5900-2185-11ea-976e-0b9418bd7aa0.png)
-
-### 2.Video
-
--   Video #
-    ![Video](https://user-images.githubusercontent.com/24609363/71055102-fcde9000-2186-11ea-8153-5a089f158ac0.png)
-
-    ![Video Res01](https://user-images.githubusercontent.com/24609363/71055202-52b33800-2187-11ea-88ac-65d12772f24f.png)
-    ![Video Res02](https://user-images.githubusercontent.com/24609363/71055201-521aa180-2187-11ea-8f0e-7f87bb4ce2c8.png)
-
-</p>
-</details>
-
-## 2. Server
-
-## 3. Train model
