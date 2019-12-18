@@ -222,9 +222,11 @@ sw.*
 *.weights
 Annotation/Images/*/*.jpg
 Annotation/Labels/*/*.txt
-Annotation/output/*/*.jpg
-Annotation/output/*/*.txt
+Annotation/output/*.jpg
+Annotation/output/*.txt
 train/output/*.jpg
 train/output/*.txt
 server/bad.list
 server/frames
+*mp4
+*avi
