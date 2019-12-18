@@ -1,16 +1,1 @@
-{
-    "freq": {
-        "Lavie": 0.0,
-        "Coca": 1.0,
-        "VinhHao": 0.34,
-        "Dasani": 0.0,
-        "Aquafina": 0.0
-    },
-    "cover": {
-        "Lavie": 0.0,
-        "Coca": 0.91,
-        "VinhHao": 0.46,
-        "Dasani": 0.0,
-        "Aquafina": 0.0
-    }
-}
+{"freq": {"Lavie": 0.0, "Coca": 1.0, "VinhHao": 0.0, "Dasani": 0.0, "Aquafina": 0.0}, "cover": {"Lavie": 0.0, "Coca": 0.029982638888888885, "VinhHao": 0.0, "Dasani": 0.0, "Aquafina": 0.0}}

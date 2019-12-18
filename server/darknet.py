@@ -241,18 +241,33 @@ def get_video_estimator(net, meta, video_dir):
         count += 1
 
     for key in video_cum_area_ratio.keys():
-        video_cum_area_ratio[key] /= (cls_cnt_freq[key] *1.0) 
+        if cls_cnt_freq[key] > 0:
+            video_cum_area_ratio[key] /= (cls_cnt_freq[key] *1.0)
+        else:
+            video_cum_area_ratio[key] = 0.0 
 
     for key in cls_cnt_freq.keys():
         cls_cnt_freq[key] /= 1.0 * count
 
+    result_dict = {
+        'freq': cls_cnt_freq,
+        'cover': video_cum_area_ratio
+    }
+
+    with open('output/template_result.json', 'w') as fb:
+        json.dump(result_dict, fb)
+
+
+    '''
     with open('output/freq.json', 'w') as fb:
         json.dump(cls_cnt_freq, fb)
+        json.dump(video_cum_area_ratio, fb)
 
     with open('output/area.json', 'w') as fb:
         json.dump(video_cum_area_ratio, fb)
+    '''
 
-    print('Num frame: ', count)
+    #print('Num frame: ', count)
     return cls_cnt_freq
 
 
@@ -314,5 +329,5 @@ if __name__ == "__main__":
         video_estimation = get_video_estimator(net, meta, input_dir)
         print(video_estimation)
         create_video_from_frames('frames')
-else:
-    print('Invalid input type, image and video only')
+    else:
+        print('Invalid input type, image and video only')
