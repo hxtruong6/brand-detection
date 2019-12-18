@@ -227,6 +227,6 @@ Annotation/output/*.txt
 train/output/*.jpg
 train/output/*.txt
 server/bad.list
-server/frames
+server/frames/*.jpg
 *mp4
 *avi
