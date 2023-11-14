@@ -1,0 +1,241 @@
+repo_name: hxtruong6/brand-detection
+report_id: e0a6873ec8d16a075ee13b9a400f16a5
+repo_type: Public
+timestamp: '2023-11-14T05:13:59+00:00'
+requested_by: trqminh
+provider: github
+branch: master
+detected_tools_count: 18
+tools:
+- name: C lang
+  description: One of the most widely used programming languages of all time
+  website_url: http://en.wikipedia.org/wiki/C_(programming_language)
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/no-img-open-source.png
+  detection_source: Repo Metadata
+- name: JavaScript
+  description: Lightweight, interpreted, object-oriented language with first-class
+    functions
+  website_url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source: Repo Metadata
+- name: Python
+  description: A clear and powerful object-oriented programming language, comparable
+    to Perl, Ruby, Scheme, or Java.
+  website_url: https://www.python.org
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/993/pUBY5pVj.png
+  detection_source: Repo Metadata
+- name: Bulma
+  description: Free, open source, &amp; modern CSS framework based on Flexbox
+  website_url: http://bulma.io/
+  version: 0.7.5
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Front-End Frameworks
+  image_url: https://img.stackshare.io/service/5204/bulma-logo.png
+  detection_source_url: web/yarn.lock
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 15:08:03.000000000 Z
+- name: Nuxt.js
+  description: The Vue.js Framework
+  website_url: https://nuxtjs.org
+  open_source: false
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Front-End Frameworks
+  image_url: https://img.stackshare.io/service/7304/23360933.png
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 12:46:38.000000000 Z
+- name: Sass
+  description: Syntactically Awesome Style Sheets
+  website_url: http://sass-lang.com/
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: CSS Pre-processors / Extensions
+  image_url: https://img.stackshare.io/service/1171/jCR2zNJV.png
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 12:46:38.000000000 Z
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source: Repo Metadata
+- name: Yarn
+  description: A new package manager for JavaScript
+  website_url: https://yarnpkg.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Front End Package Manager
+  image_url: https://img.stackshare.io/service/5848/44mC-kJ3.jpg
+  detection_source: web/yarn.lock
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 12:46:38.000000000 Z
+- name: nodemon
+  description: A simple monitor script for use during development of a node.js app
+  website_url: http://nodemon.io/
+  version: 1.19.4
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Monitoring
+  sub_category: node.js Application Monitoring
+  image_url: https://img.stackshare.io/service/5577/preview.png
+  detection_source_url: web/yarn.lock
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 15:08:03.000000000 Z
+- name: npm
+  description: The package manager for JavaScript.
+  website_url: https://www.npmjs.com/
+  open_source: false
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Front End Package Manager
+  image_url: https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 12:46:38.000000000 Z
+- name: Jupyter
+  description: Multi-language interactive computing environments.
+  website_url: http://jupyter.org
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Application Utilities
+  sub_category: Data Science Notebooks
+  image_url: https://img.stackshare.io/service/4190/fGBUdNf__400x400.jpg
+  detection_source: Repo Metadata
+- name: axios
+  description: Promise based HTTP client for the browser and node.js
+  website_url: https://github.com/mzabriskie/axios
+  version: 0.19.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Javascript Utilities & Libraries
+  image_url: https://img.stackshare.io/no-img-open-source.png
+  detection_source_url: web/yarn.lock
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 15:08:03.000000000 Z
+- name: cross-env
+  description: Run scripts that set and use environment variables across platforms
+  package_url: https://www.npmjs.com/cross-env
+  version: 5.2.1
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/15828/default_14fd11531839d935f920b6d55bd6f3528c890ad7.png
+  detection_source_url: web/yarn.lock
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 15:08:03.000000000 Z
+- name: element-ui
+  description: A Component Library for Vue.js
+  package_url: https://www.npmjs.com/element-ui
+  version: 2.13.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/16240/default_5dfc1810d0882ab844578a326bb8bf19e45e7227.png
+  detection_source_url: web/yarn.lock
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 15:08:03.000000000 Z
+- name: file-saver
+  description: An HTML5 saveAs
+  package_url: https://www.npmjs.com/file-saver
+  version: 2.0.2
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/16795/default_6e51a44775c61dcb2888547ad406a2f0cf2c344e.png
+  detection_source_url: web/yarn.lock
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 15:08:03.000000000 Z
+- name: node-sass
+  description: Wrapper around libsass
+  package_url: https://www.npmjs.com/node-sass
+  version: 4.13.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/15827/default_db4a7791d2f1174547374b9b587bc10fec088a5a.png
+  detection_source_url: web/yarn.lock
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 15:08:03.000000000 Z
+  vulnerabilities:
+  - name: Improper Certificate Validation in node-sass
+    cve_id: CVE-2020-24025
+    cve_url: https://github.com/advisories/GHSA-r8f7-9pfq-mjmv
+    detected_date: Feb 10
+    severity: moderate
+    first_patched: 7.0.0
+  - name: Denial of Service in node-sass
+    cve_id: 
+    cve_url: https://github.com/advisories/GHSA-9v62-24cr-58cx
+    detected_date: Aug 22
+    severity: moderate
+    first_patched: 4.13.1
+- name: nuxt
+  description: A minimalistic framework for server-rendered Vue.js applications
+  package_url: https://www.npmjs.com/nuxt
+  version: 2.10.2
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/17986/default_3c26cdeaec6eea61500856203ee8d97e81b93f76.png
+  detection_source_url: web/yarn.lock
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 15:08:03.000000000 Z
+- name: sass-loader
+  description: Sass loader for webpack
+  package_url: https://www.npmjs.com/sass-loader
+  version: 7.3.1
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/15842/default_b71c906aeda030a5e2f1fe40bf12a93be52404ab.png
+  detection_source_url: web/yarn.lock
+  detection_source: web/package.json
+  last_updated_by: hxtruong
+  last_updated_on: 2019-12-05 15:08:03.000000000 Z
